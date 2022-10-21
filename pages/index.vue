@@ -63,7 +63,6 @@ export default Vue.extend({
       let flag: boolean = false;
       let regExp: RegExp = new RegExp(`([ \(\-]|^)${this.filter.trim()}([ \)\-]|$)`,'i'); //регулярное выражение
       for(let key in (value as Game)) {
-        console.log(value[key as GameKey]);
         if (regExp.exec(value[key as GameKey].toString())!= null) flag = true;
       }
       return flag;
