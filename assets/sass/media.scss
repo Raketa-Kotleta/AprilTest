@@ -1,0 +1,27 @@
+$media_endpoints:(
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+@mixin media-xs {
+  @media (max-width: map-get($media_endpoints,"sm")) { @content; }
+}
+@mixin media-sm {
+  @media (min-width: map-get($media_endpoints,"sm")) { @content; }
+}
+@mixin media-md {
+  @media (min-width: map-get($media_endpoints,"md")) { @content; }
+}
+@mixin media-lg {
+  @media (min-width: map-get($media_endpoints,"lg")) { @content; }
+}
+@mixin media-xl {
+  @media (min-width: map-get($media_endpoints,"xl")) { @content; }
+}
+@mixin media-xxl {
+  @media (min-width: map-get($media_endpoints,"xxl")) { @content; }
+}
