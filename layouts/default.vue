@@ -11,7 +11,8 @@ export default {
   components:{
   NavBar,
   },
-  name: "default"
+  name: "default",
+
 }
 </script>
 

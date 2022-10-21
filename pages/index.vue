@@ -13,7 +13,7 @@
        </div>
       </div>
       <div class="game-list"  :class="pageViewer.current == pageViewer.values.LINEAR ? 'column-list':'linear-list'">
-        <GameCard v-for="game in gamesData.values()"
+        <GameCard v-for="game of getGamesData.slice(Interval.start,Interval.end)"
                   :key="game.id"
                   :id="game.id"
                   :thumbnail="game.thumbnail"
@@ -24,6 +24,9 @@
                   :view="pageViewer.current">
         </GameCard>
       </div>
+      <div class="pagination-wrapper">
+        <PaginationView></PaginationView>
+      </div>
     </div>
   </div>
 </template>
@@ -32,12 +35,14 @@
 import Vue from 'vue'
 import GameCard from "~/components/GameCard.vue";
 import ModalView from "~/components/ModalView.vue";
+import PaginationView from "~/components/PaginationView.vue";
 import Game from "~/middleware/Game";
 export default Vue.extend({
   name: 'IndexPage',
   components:{
     GameCard,
     ModalView,
+    PaginationView,
   },
   data(){
     return{
@@ -58,35 +63,37 @@ export default Vue.extend({
       if (this.filter.length > 0)
         this.$store.dispatch('modules/game/filterGame',this.Filter);
       else this.$store.commit('modules/game/setFilteredGames', this.$store.getters["modules/game/getGamesMap"])
+      this.$store.commit('setCurrentPage',1);
     },
-    Filter(key: number, value: Game):boolean{
+    Filter(key: number, value: Game):boolean{ //фильтрующая функция. Передаем как callback
       type GameKey = keyof Game;
       let flag: boolean = false;
-      let regExp: RegExp = new RegExp(`([ \(\-]|^)${this.filter.trim()}([ \)\-]|$)`,'i');
+      let regExp: RegExp = new RegExp(`([ \(\-]|^)${this.filter.trim()}([ \)\-]|$)`,'i'); //регулярное выражение
       for(let key in (value as Game)) {
         console.log(value[key as GameKey]);
         if (regExp.exec(value[key as GameKey].toString())!= null) flag = true;
       }
-
-
       return flag;
-      // console.log(key);
      }
   },
   computed:{
-    gamesData:{
-     get(){
-       return this.$store.getters["modules/game/getFilteredGamesMap"]
-     },
-      set(value){
-
-      }
+    getGamesData():Array<Game> {
+        return [...this.$store.getters["modules/game/getFilteredGamesMap"].values()]
     },
+    Interval():Object{
+      let start = (this.$store.getters.getCurrentPage-1) * this.$store.getters.getPageItemsCount
+      return {
+        start: start,
+        end: start + this.$store.getters.getPageItemsCount,
+      }
+    }
   },
   async fetch({store}) {
     await store.dispatch('modules/game/getGames');
     store.commit('setCurrentGameId', 2)
     await store.commit('modules/game/setFilteredGames',store.getters["modules/game/getGamesMap"]);
+    await store.commit('setCurrentPage',1);
+    await store.commit('setPageItemCount',10);
   },
 })
 </script>
@@ -152,5 +159,10 @@ export default Vue.extend({
   .active-button{
     border: 1px solid $orange;
     background-color: $orange;
+  }
+  .pagination-wrapper{
+    display: flex;
+    justify-content: center;
+    margin: 32px 0 8px 0;
   }
 </style>

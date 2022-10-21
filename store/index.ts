@@ -9,6 +9,8 @@ Vue.use(Vuex)
 const store: StoreOptions<rootState> = {
   state:{
     CurrentItemId: 1,
+    CurrentPage: 0,
+    PageItemsCount: 0,
   },
   mutations,
   getters,
