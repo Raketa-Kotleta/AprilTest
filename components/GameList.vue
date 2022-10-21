@@ -1,0 +1,13 @@
+<template>
+$END$
+</template>
+
+<script>
+export default {
+name: "GameList"
+}
+</script>
+
+<style scoped>
+
+</style>
