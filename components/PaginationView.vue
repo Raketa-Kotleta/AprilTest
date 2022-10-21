@@ -2,7 +2,7 @@
 <div class="pagination">
   <button class="arrow-btn" @click="movePrev()">
 <!--    <img src="../static/left-arrow.png" alt="">-->
-    Назад
+    Previous
   </button>
   <div class="pagination-info">
     <span class="current-page">{{CurrentPage}}</span>
@@ -11,7 +11,7 @@
   </div>
   <button class="arrow-btn" @click="moveNext()">
 <!--    <img src="../static/right-arrow.png" alt="">-->
-    Вперед
+    Next
   </button>
 </div>
 </template>

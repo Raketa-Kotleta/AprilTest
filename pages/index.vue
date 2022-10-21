@@ -4,7 +4,7 @@
       <ModalView :id="modal.modal_id" :title="modal.modal_title"></ModalView>
       <div class="settings">
         <div class="search-setting">
-          <input class="search-field" v-model="filter" placeholder="Введите что-нибудь, к примеру(Windows, MMORPG, 23, Wargaming...). Нажмите на поиск"><button @click="FilterGame"class="search-btn"><img src="../static/search-icon.svg" alt=""></button>
+          <input class="search-field" v-model="filter" placeholder="Write anything, for example(Windows, MMORPG, 23, Wargaming...). Press button to search"><button @click="FilterGame"class="search-btn"><img src="../static/search-icon.svg" alt=""></button>
         </div>
        <div class="page-view-setting">
          <button class="" @click="pageViewer.current = pageViewer.values.GRID" :class="pageViewer.current == pageViewer.values.GRID ? 'active-button':''"><img src="../static/list-grid-icon.png" alt=""></button>
@@ -99,7 +99,7 @@ export default Vue.extend({
         border:none;
         padding: 8px 16px;
         width: 100%;
-        max-width: 40vw;
+        max-width: 35vw;
         margin: 0;
       }
       .search-btn{
