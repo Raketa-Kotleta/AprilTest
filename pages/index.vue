@@ -1,8 +1,7 @@
 <template>
   <div class="">
     <div class="container">
-
-      <ModalView :id="modal_id" :title="modal_title"></ModalView>
+      <ModalView :id="modal.modal_id" :title="modal.modal_title"></ModalView>
       <div class="settings">
         <div class="search-setting">
           <input class="search-field" v-model="filter" placeholder="Введите что-нибудь, к примеру(Windows, MMORPG, 23, Wargaming...). Нажмите на поиск"><button @click="FilterGame"class="search-btn"><img src="../static/search-icon.svg" alt=""></button>
@@ -12,18 +11,8 @@
          <button class="" @click="pageViewer.current = pageViewer.values.LINEAR" :class="pageViewer.current == pageViewer.values.LINEAR ? 'active-button':''"><img src="../static/list-icon.png" alt=""></button>
        </div>
       </div>
-      <div class="game-list"  :class="pageViewer.current == pageViewer.values.LINEAR ? 'column-list':'linear-list'">
-        <GameCard v-for="game of getGamesData.slice(Interval.start,Interval.end)"
-                  :key="game.id"
-                  :id="game.id"
-                  :thumbnail="game.thumbnail"
-                  :title="game.title"
-                  :description="game.short_description"
-                  :publish-date="game.release_date"
-                  :publisher="game.publisher"
-                  :view="pageViewer.current">
-        </GameCard>
-      </div>
+      <h1 class="no-result-msg" v-if="!this.$store.getters['modules/game/getFilteredGamesMap'].size">No results!</h1>
+      <GameList :orientation="pageViewer.current "></GameList>
       <div class="pagination-wrapper">
         <PaginationView></PaginationView>
       </div>
@@ -36,6 +25,7 @@ import Vue from 'vue'
 import GameCard from "~/components/GameCard.vue";
 import ModalView from "~/components/ModalView.vue";
 import PaginationView from "~/components/PaginationView.vue";
+import GameList from "~/components/GameList.vue";
 import Game from "~/middleware/Game";
 export default Vue.extend({
   name: 'IndexPage',
@@ -43,6 +33,7 @@ export default Vue.extend({
     GameCard,
     ModalView,
     PaginationView,
+    GameList,
   },
   data(){
     return{
@@ -53,8 +44,10 @@ export default Vue.extend({
           GRID: "vertical"
         }
       },
-      modal_title: "Modal",
-      modal_id: "modal-1",
+      modal:{
+        modal_title: "Modal",
+        modal_id: "modal-1",
+      },
       filter:"",
     }
   },
@@ -65,7 +58,7 @@ export default Vue.extend({
       else this.$store.commit('modules/game/setFilteredGames', this.$store.getters["modules/game/getGamesMap"])
       this.$store.commit('setCurrentPage',1);
     },
-    Filter(key: number, value: Game):boolean{ //фильтрующая функция. Передаем как callback
+    Filter(key: number, value: Game):boolean{ //фильтрующая функция. Передаем в аргументы как callback
       type GameKey = keyof Game;
       let flag: boolean = false;
       let regExp: RegExp = new RegExp(`([ \(\-]|^)${this.filter.trim()}([ \)\-]|$)`,'i'); //регулярное выражение
@@ -76,40 +69,20 @@ export default Vue.extend({
       return flag;
      }
   },
-  computed:{
-    getGamesData():Array<Game> {
-        return [...this.$store.getters["modules/game/getFilteredGamesMap"].values()]
-    },
-    Interval():Object{
-      let start = (this.$store.getters.getCurrentPage-1) * this.$store.getters.getPageItemsCount
-      return {
-        start: start,
-        end: start + this.$store.getters.getPageItemsCount,
-      }
-    }
-  },
   async fetch({store}) {
     await store.dispatch('modules/game/getGames');
     store.commit('setCurrentGameId', 2)
     await store.commit('modules/game/setFilteredGames',store.getters["modules/game/getGamesMap"]);
     await store.commit('setCurrentPage',1);
-    await store.commit('setPageItemCount',10);
+    await store.commit('setPageItemCount',12);
   },
 })
 </script>
 <style lang="scss">
 @import "/assets/sass/colors";
-  .column-list{
-    flex-direction: column;
-  }
-  .linear-list{
-    flex-direction: row;
-  }
-  .game-list{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 32px 16px;
+  .no-result-msg{
+    text-align: center;
+    color: $grey;
   }
   .settings{
     display: flex;
@@ -164,5 +137,13 @@ export default Vue.extend({
     display: flex;
     justify-content: center;
     margin: 32px 0 8px 0;
+    align-self: end;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .container{
+    margin-bottom: 96px;
   }
 </style>

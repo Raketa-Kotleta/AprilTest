@@ -7,7 +7,7 @@
   <div class="pagination-info">
     <span class="current-page">{{CurrentPage}}</span>
     <span class="divider">/</span>
-    <span class="max-page-count">{{MaxPagesCount}}</span>
+    <span class="max-page-count">{{MaxPagesCount || 1}}</span>
   </div>
   <button class="arrow-btn" @click="moveNext()">
 <!--    <img src="../static/right-arrow.png" alt="">-->

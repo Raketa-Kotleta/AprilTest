@@ -1,5 +1,5 @@
 <template>
-<div  v-model="View" :class="View == LINEAR_VIEW ? 'linear-game-card':'vertical-game-card'">
+<div  v-model="View" :class="View == pageViewValues.LINEAR ? 'linear-game-card':'vertical-game-card'">
 
     <div class="thumbnail-wrapper">
       <img :src="Thumbnail" alt="none" class="thumbnail">
@@ -40,8 +40,10 @@ export default{
   },
   data(){
     return{
-      LINEAR_VIEW: 'linear',
-      VERTICAL_VIEW: 'vertical',
+      pageViewValues:{
+        LINEAR: "linear",
+        GRID: "vertical"
+      }
 
     }
   },
