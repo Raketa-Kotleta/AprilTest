@@ -12,7 +12,6 @@ export default {
   NavBar,
   },
   name: "default",
-
 }
 </script>
 

@@ -69,7 +69,7 @@ export default{
   .thumbnail-wrapper{
     width: 40%;
     @include media-sm{
-      width: 33%;
+      width: 32%;
     }
   }
   .thumbnail{
@@ -82,7 +82,7 @@ export default{
     flex-direction: column;
     padding: 4px;
     @include media-sm {
-      width: 67%;
+      width: 68%;
     }
   }
   .body{
@@ -92,8 +92,11 @@ export default{
     margin-bottom: auto;
     font-size: .8rem;
     @include media-md{
-      white-space: normal;
+
       font-size: 1rem;
+    }
+    @include media-lg{
+      white-space: normal;
     }
   }
   .title{
@@ -139,12 +142,12 @@ export default{
   display: flex;
   flex-direction: column;
   box-shadow: 0px 10px 14px 0px rgba(90, 90, 90, 0.33);
-  max-width: 350px;
+  max-width: 355px;
   @include media-md{
     max-width: 300px;
   }
   @include media-lg{
-    max-width: 350px;
+    max-width: 359px;
   }
   .thumbnail{
     width: 100%;
